@@ -43,16 +43,19 @@ const Quiz = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 ">
-      <h2 className="text-[17px]">
+    <div className="max-w-[400px] mx-auto p-6 bg-white rounded-xl shadow-md flex flex-col gap-6">
+      <h1 className="text-xl font-semibold text-center">UQuiz?</h1>
+
+      <h2 className="text-lg text-center">
         <span>{currentId + 1}. </span>
         {currentQuiz.question}
       </h2>
+
       <div className="flex flex-col gap-3">
         {currentQuiz.options.map((option, idx) => (
           <label
-            className="rounded-[5px] bg-[rgba(220,220,222,0.84)] py-2 px-3 flex items-center gap-1.5"
             key={idx}
+            className="rounded-md bg-gray-200 px-3 py-2 flex items-center gap-2 cursor-pointer"
           >
             <input
               type="radio"
@@ -60,17 +63,18 @@ const Quiz = () => {
               value={option}
               checked={option === selectedOption}
               onChange={handleOption}
+              className="mr-1"
             />
             {option}
           </label>
         ))}
       </div>
-      <CustomButton
-        onClick={handleNextQuiz}
-        className={"bg-gray-400 mx-auto w-44 "}
-      >
-        다음
-      </CustomButton>
+
+   <CustomButton
+      onClick={handleNextQuiz}
+      className="w-full bg-blue-500 py-2 rounded-lg text-white hover:bg-gray-600 transition-colors">
+       다음
+    </CustomButton>
     </div>
   );
 };

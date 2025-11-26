@@ -14,58 +14,21 @@ function Home() {
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f8f9fc",
-      }}
-    >
-      <div
-        style={{
-          width: "380px",
-          backgroundColor: "white",
-          padding: "40px 30px",
-          borderRadius: "15px",
-          boxShadow: "0 5px 25px rgba(0,0,0,0.1)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <h1 style={{ marginBottom: "25px", fontWeight: "600" }}>UQuiz?(by 이찬영)</h1>
+    <div className="h-screen flex justify-center items-center bg-[#f8f9fc]">
+      <div className="w-[380px] bg-white p-[40px_30px] rounded-[15px] shadow-[0_5px_25px_rgba(0,0,0,0.1)] flex flex-col items-center">
+        <h1 className="mb-[25px] font-semibold">UQuiz?(by 이찬영)</h1>
 
         <input
           type="text"
           placeholder="닉네임을 입력하세요.."
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "12px 14px",
-            borderRadius: "8px",
-            border: "1px solid #ddd",
-            outline: "none",
-            fontSize: "15px",
-            marginBottom: "20px",
-          }}
+          className="w-full p-[12px_14px] rounded-[8px] border border-[#ddd] outline-none text-[15px] mb-[20px]"
         />
 
         <button
           onClick={handleStart}
-          style={{
-            width: "120px",
-            padding: "12px 0",
-            backgroundColor: "#3b82f6",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "15px",
-            cursor: "pointer",
-            transition: "0.2s",
-          }}
+          className="w-[120px] py-[12px] bg-blue-500 text-white rounded-[8px] text-[15px] cursor-pointer transition hover:bg-blue-600"
         >
           시작하기
         </button>

@@ -4,7 +4,7 @@ import CustomButton from "../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 
 const Results = () => {
-  const { result } = useContext(RankingContext);
+  const { myResult, ranking } = useContext(RankingContext);
   const navigate = useNavigate();
 
   const handleRestart = () => {
@@ -12,32 +12,36 @@ const Results = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center w-full gap-4">
       <h2 className="text-2xl font-extrabold">📊 퀴즈 결과</h2>
-      <div className="flex items-center">
-        <p className="text-[16px]">내 점수 : {result.score} / 10</p>
+
+      <div>
+        <p className="text-lg">내 점수 : {myResult.score} / 10</p>
       </div>
-      <table className="table-auto rounded-sm w-1/2 border-gray-400 mb-5 ">
+
+      <table className="w-1/2 border border-gray-400 border-collapse rounded overflow-hidden mb-5">
         <thead className="bg-gray-200">
           <tr>
-            <th className="p-2">순위</th>
-            <th className="p-2">ID</th>
-            <th className="p-2">점수</th>
+            <th className="py-2 border-b border-gray-400">순위</th>
+            <th className="py-2 border-b border-gray-400">ID</th>
+            <th className="py-2 border-b border-gray-400">점수</th>
           </tr>
         </thead>
         <tbody>
-          {result.map((item, idx) => (
-            <tr className="text-center" key={idx}>
-              <td className="border-t-1 border-gray-300 p-2">{idx + 1}</td>
-              <td className="border-t-1 border-gray-300 p-2">
-                {item.nickname}
-              </td>
-              <td className="border-t-1 border-gray-300 p-2">{item.score}</td>
+          {ranking.map((item, idx) => (
+            <tr key={idx} className="text-center">
+              <td className="py-2 border-t border-gray-400">{idx + 1}</td>
+              <td className="py-2 border-t border-gray-400">{item.nickname}</td>
+              <td className="py-2 border-t border-gray-400">{item.score}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <CustomButton onClick={handleRestart} className={"bg-amber-500"}>
+
+      <CustomButton
+        onClick={handleRestart}
+        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+      >
         다시하기
       </CustomButton>
     </div>

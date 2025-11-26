@@ -4,41 +4,45 @@ export const RankingContext = createContext();
 
 const RankingProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [result, setResult] = useState([]);
+  const [ranking, setRanking] = useState([]);
+  const [myResult, setMyResult] = useState({ nickname: "", score: 0 });
 
   useEffect(() => {
     const storedData = localStorage.getItem("ranking_info");
-    if (!storedData) {
-      setIsLoading(false);
-      return;
+    if (storedData) {
+      setRanking(JSON.parse(storedData));
     }
-    const parsedData = JSON.parse(storedData);
-    setResult(parsedData);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
     if (!isLoading) {
-      localStorage.setItem("ranking_info", JSON.stringify(result));
+      localStorage.setItem("ranking_info", JSON.stringify(ranking));
     }
-  }, [result]);
+  }, [ranking, isLoading]);
 
   const addRanking = (nickname, score) => {
-    setResult((prev) => {
+    setMyResult({ nickname, score });
+
+    setRanking((prev) => {
       const newList = [...prev, { nickname, score }];
-
       newList.sort((a, b) => b.score - a.score);
-
       return newList;
     });
   };
 
   if (isLoading) {
-    return <div className="flex justify-center mt-2.5 text-3xl">Loading</div>;
+    return (
+      <div className="flex justify-center mt-2.5 text-2xl">
+        Loading
+      </div>
+    );
   }
 
   return (
-    <RankingContext.Provider value={{ result, addRanking }}>{children}</RankingContext.Provider>
+    <RankingContext.Provider value={{ ranking, myResult, addRanking }}>
+      {children}
+    </RankingContext.Provider>
   );
 };
 
