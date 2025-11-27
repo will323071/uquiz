@@ -1,24 +1,27 @@
-import { useContext } from "react";
-import { RankingContext } from "../contexts/RankingContext";
+import { useRank } from "../contexts/RankingContext";
 import CustomButton from "../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 
 const Results = () => {
-  const { myResult, ranking } = useContext(RankingContext);
+  const { myResult, ranking, resetRanking } = useRank(); 
   const navigate = useNavigate();
 
   const handleRestart = () => {
-    navigate("/");
+    navigate("/"); 
+  };
+
+  const handleReset = () => {
+    if (window.confirm("정말로 모든 랭킹을 초기화하시겠습니까?")) {
+      resetRanking();
+    }
   };
 
   return (
     <div className="flex flex-col justify-center items-center w-full gap-4">
       <h2 className="text-2xl font-extrabold">📊 퀴즈 결과</h2>
-
       <div>
         <p className="text-lg">내 점수 : {myResult.score} / 10</p>
       </div>
-
       <table className="w-1/2 border border-gray-400 border-collapse rounded overflow-hidden mb-5">
         <thead className="bg-gray-200">
           <tr>
@@ -38,12 +41,21 @@ const Results = () => {
         </tbody>
       </table>
 
-      <CustomButton
-        onClick={handleRestart}
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
-      >
-        다시하기
-      </CustomButton>
+      <div className="flex gap-4">
+        <CustomButton
+          onClick={handleRestart}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+        >
+          다시하기
+        </CustomButton>
+
+        <CustomButton
+          onClick={handleReset}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+        >
+          초기화
+        </CustomButton>
+      </div>
     </div>
   );
 };

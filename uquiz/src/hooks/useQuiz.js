@@ -1,54 +1,51 @@
 import { useState } from "react";
-import { useRank } from "../contexts/RankingContext";
+import data from "../data/questions.json";
 import { useNavigate, useParams } from "react-router-dom";
-
-import QUESTIONS from "../assets/data/questions.json";
-import { RouteName } from "../router";
+import { useContext } from "react";
+import { RankingContext } from "../contexts/RankingContext";
 
 export const useQuiz = () => {
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const { updateRank } = useRank();
-  const [corrects, setCorrects] = useState(0);
-  const [selected, setSelected] = useState(-1);
-  const params = useParams();
+  const [quiz] = useState(data);
+  const [currentId, setCurrentId] = useState(0);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [answerCount, setAnswerCount] = useState(0);
+
+  const { nickname } = useParams();
+  const decodedNickname = decodeURIComponent(nickname);
   const navigate = useNavigate();
-  const handleQuestionIndex = () => {
-    if (selected < 0) {
-      alert("보기를 선택해주세요!");
+  const { addRanking } = useContext(RankingContext);
+
+  const currentQuiz = quiz[currentId];
+  const answer = currentQuiz.options[currentQuiz.answer];
+
+  const handleOption = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const handleNextQuiz = () => {
+    if (!selectedOption) {
+      alert("선택지를 선택해주세요.");
       return;
     }
-    if (selected === QUESTIONS[questionIndex].answer) {
-      setCorrects((prev) => prev + 1);
-    }
-    setSelected(-1);
-    if (questionIndex === QUESTIONS.length - 1) {
-      if (params?.nickname) {
-        const { nickname } = params;
 
-        if (selected === QUESTIONS[questionIndex].answer) {
-          updateRank({
-            id: nickname,
-            score: corrects + 1,
-            total: QUESTIONS.length,
-          });
-        } else {
-          updateRank({
-            id: nickname,
-            score: corrects,
-            total: QUESTIONS.length,
-          });
-        }
-        navigate(RouteName.results(nickname));
-      }
+    const isCorrect = selectedOption === answer;
+    const newCount = isCorrect ? answerCount + 1 : answerCount;
+
+    if (currentId + 1 < quiz.length) {
+      setCurrentId((prev) => prev + 1);
+      setAnswerCount(newCount);
+      setSelectedOption("");
     } else {
-      setQuestionIndex((prev) => prev + 1);
-    }
-  };
-  const handleOptionSelected = (e) => {
-    if (Number(e.target.value) >= 0 && Number(e.target.value) < 4) {
-      setSelected(Number(e.target.value));
+      addRanking(decodedNickname, newCount);
+      navigate(`/results/${encodeURIComponent(decodedNickname)}`);
     }
   };
 
-  return { questionIndex, selected, handleQuestionIndex, handleOptionSelected };
+  return {
+    currentQuiz,
+    currentId,
+    selectedOption,
+    handleOption,
+    handleNextQuiz,
+  };
 };
