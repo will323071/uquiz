@@ -35,7 +35,7 @@ const RankingProvider = ({ children }) => {
 };
 
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="w-full h-screen flex items-center justify-center text-lg font-semibold rounded-lg">Loading...</div>;
 
   return (
     <RankingContext.Provider value={{ ranking, myResult, addRanking, resetRanking }}>
