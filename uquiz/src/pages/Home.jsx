@@ -20,7 +20,7 @@ function Home() {
 
         <input
           type="text"
-          placeholder="닉네임을 입력하세요.."
+          placeholder="닉네임을 입력하세요."
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           className="w-full p-[12px_14px] rounded-[8px] border border-[#ddd] outline-none text-[15px] mb-[20px]"
